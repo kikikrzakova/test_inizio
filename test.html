@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Google Search Extractor</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+    }
+    input, button {
+      padding: 0.5em;
+      font-size: 1em;
+    }
+    .results {
+      margin-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Google Search</h1>
+  <form id="searchForm">
+    <input type="text" id="query" placeholder="Search keywords" required />
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="results" id="results"></div>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const query = document.getElementById('query').value;
+
+      const res = await fetch('http://localhost:3000/api/search?q=' + encodeURIComponent(query));
+      const data = await res.json();
+
+      const resultsDiv = document.getElementById('results');
+      json_result =  JSON.stringify(data, null, 2);
+      resultsDiv.innerHTML = `
+        <h2>Top Results</h2>
+        <pre>${json_result}</pre>
+        <a href="data:application/json;charset=utf-8,${encodeURIComponent(json_result)}" download="results.json">
+          Download JSON
+        </a>
+      `;
+    });
+  </script>
+</body>
+</html>
