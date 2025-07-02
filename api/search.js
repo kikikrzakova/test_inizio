@@ -1,19 +1,8 @@
-const express = require('express');
+// /api/search.js
+
 const axios = require('axios');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
 
-dotenv.config();
-
-const app = express();
-app.use(cors()); // Enable CORS for all routes
-const PORT = process.env.PORT || 3000;
-
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/api/search', async (req, res) => {
+module.exports = async (req, res) => {
   const query = req.query.q;
   if (!query) return res.status(400).json({ error: 'Missing query' });
 
@@ -22,19 +11,13 @@ app.get('/api/search', async (req, res) => {
       params: {
         q: query,
         engine: 'google',
-        api_key: process.env.SERPAPI_KEY
-      }
+        api_key: process.env.SERPAPI_KEY,
+      },
     });
 
     const results = response.data.organic_results || [];
-    res.json(results);
+    res.status(200).json(results);
   } catch (err) {
     res.status(500).json({ error: 'Search failed', details: err.message });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
-module.exports = app; // Export the app for testing
+};
