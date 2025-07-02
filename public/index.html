@@ -31,7 +31,7 @@
       e.preventDefault();
       const query = document.getElementById('query').value;
 
-      const res = await fetch('http://localhost:3000/api/search?q=' + encodeURIComponent(query));
+      const res = await fetch('/api/search?q=' + encodeURIComponent(query));
       const data = await res.json();
 
       const resultsDiv = document.getElementById('results');
