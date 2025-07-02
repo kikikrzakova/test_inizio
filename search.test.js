@@ -3,7 +3,7 @@
 express = require('express');
 request = require('supertest');
 axios = require('axios');
-server = require('./api/backend.js');
+server = require('./api/search.js');
 
 
 
